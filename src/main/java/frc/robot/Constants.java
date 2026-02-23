@@ -25,4 +25,25 @@ public final class Constants {
 
   public static final double MAX_SPEED = Units.feetToMeters(4.5);
 
+   public final class SparkMaxIDs {
+    public static final int LEFT_FLY_WHEEL = 0;
+    public static final int RIGHT_FLY_WHEEL = 0;
+    public static final int INTAKE_LIFT = 0;
+    public static final int INTAKE_SPINNY = 0;
+    public static final int LEFT_CLIMBER = 0;
+    public static final int RIGHT_CLIMBER = 0;
+  }
+
+  public final class ShooterConstants {
+    public static final double SHOOTING_SPEED = 0.5;
+  }
+
+  public final class IntakeConstants {
+    public static final double LIFT_SPEED = 0;
+    public static final double SPIN_SPEED = 0;
+  }
+
+  public final class ClimberConstants {
+    public static final double CLIMBER_SPEED = 0;
+  }
 }

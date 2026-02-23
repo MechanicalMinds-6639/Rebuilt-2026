@@ -13,8 +13,6 @@ import swervelib.SwerveInputStream;
 
 import java.io.File;
 
-import org.dyn4j.collision.broadphase.CollisionItemBroadphaseFilter;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -37,6 +35,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem driveBase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final Shooter shooter = new Shooter();
+  private final Intake intake = new Intake();
+  private final Climber climber = new Climber();
+
 
   // Creates the Xbox Controller(s)
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.DRIVER);
@@ -84,6 +86,14 @@ public class RobotContainer {
     driverController.a().whileTrue(driveBase.centerModulesCommand()); //Zeros the wheels
     driverController.y().onTrue(Commands.runOnce(driveBase::zeroGyro)); //Zeros the gyro
     //System.out.println("brad");
+    driverController.x().onTrue(shooter.ShooterOn());
+    driverController.rightTrigger().whileTrue(intake.IntakeDown());
+    driverController.leftTrigger().whileTrue(intake.IntakeUp());
+    driverController.povRight().onTrue(intake.IntakeSpinny());
+    driverController.povDown().onTrue(intake.IntakeStop());
+    driverController.povLeft().onTrue(intake.IntakeReverseSpinny());
+    driverController.rightBumper().whileTrue(climber.ClimberUp());
+    driverController.leftBumper().whileTrue(climber.ClimberDown());
   }
 
   private final SendableChooser<Command> autoChooser;
@@ -99,5 +109,5 @@ public class RobotContainer {
 
   public void resetGyro() {
     driveBase.zeroGyro();
-  }
+  } 
 }
