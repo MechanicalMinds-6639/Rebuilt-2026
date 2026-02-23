@@ -36,9 +36,30 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final SwerveSubsystem driveBase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
-  // Creates the Xbox Controller
+  // Creates the Xbox Controller(s)
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.DRIVER);
+
+  // Code from YAGSL for the SwerveSubsytem
+  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(driveBase.getSwerveDrive(),
+                                                                () -> driverController.getLeftY() * -1,
+                                                                () -> driverController.getLeftX() * -1)
+                                                                .withControllerRotationAxis(driverController::getRightX)
+                                                                .deadband(OperatorConstants.DEADBAND)
+                                                                .scaleTranslation(0.8) // If want to go faster, increase number
+                                                                .allianceRelativeControl(true);     
+
+  // Code from YAGSL for the SwerveSubsytem
+  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driverController::getRightX, 
+                                                                                             driverController::getRightY)
+                                                                                             .headingWhile(true);
+
+  // Code from YAGSL for the SwerveSubsytem
+  Command driveFieldOrientedDirectAngle = driveBase.driveFieldOriented(driveDirectAngle);
+
+  // Code from YAGSL for the SwerveSubsytem
+  Command driveFieldOrientedAngularVelocity = driveBase.driveFieldOriented(driveAngularVelocity);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -52,7 +73,18 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+
+    //Code from YAGSL for the SwerveSubsytem
+    Command driveFieldOrientedDirectAngle = driveBase.driveFieldOriented(driveDirectAngle);
+    Command driveFieldOrientedAngularVelocity = driveBase.driveFieldOriented(driveAngularVelocity);
+
+    driveBase.setDefaultCommand(driveFieldOrientedAngularVelocity); //Change to switch the drive control style, make sure to set heading correction to true in SwerveSubsystem
+
+    driverController.a().whileTrue(driveBase.centerModulesCommand()); //Zeros the wheels
+    driverController.y().onTrue(Commands.runOnce(driveBase::zeroGyro)); //Zeros the gyro
+    //System.out.println("brad");
+  }
 
   private final SendableChooser<Command> autoChooser;
 
@@ -63,5 +95,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
       return autoChooser.getSelected();
+  }
+
+  public void resetGyro() {
+    driveBase.zeroGyro();
   }
 }
