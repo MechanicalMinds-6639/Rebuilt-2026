@@ -18,32 +18,59 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int DRIVER = 1;
+
+  public static final class OperatorConstants {
+    public static final int DRIVER = 0; // KEEP ZEROOOOOOOOO!!!!!!!!
+    public static final int COPILOT = 1; // Keep One
     public static final double DEADBAND = 0.1;
   }
 
-  public static final double MAX_SPEED = Units.feetToMeters(4.5);
+  public static final class SwerveDriveConstants {
+    public static final double MAX_SPEED = 3.0; // Meters per second
 
-   public final class SparkMaxIDs {
-    public static final int LEFT_FLY_WHEEL = 0;
-    public static final int RIGHT_FLY_WHEEL = 0;
-    public static final int INTAKE_LIFT = 0;
-    public static final int INTAKE_SPINNY = 0;
-    public static final int LEFT_CLIMBER = 0;
-    public static final int RIGHT_CLIMBER = 0;
+  }
+  
+  public static final class SparkMaxIDs {
+    public static final int LEFT_FLY_WHEEL = 9;
+    public static final int RIGHT_FLY_WHEEL = 10;
+    public static final int KICKER = 11;
+    public static final int LEFT_VECTOR_WHEELS = 12;
+    public static final int RIGHT_VECTOR_WHEELS = 13;
+    public static final int INTAKE_LIFT = 14;
+    public static final int INTAKE_SPINNY = 15;
+    public static final int LEFT_CLIMBER = 16;
+    public static final int RIGHT_CLIMBER = 17;
   }
 
-  public final class ShooterConstants {
-    public static final double SHOOTING_SPEED = 0.5;
+  public static final class ShooterConstants {
+    public static final double SHOOTING_SPEED = 1;
+
+    // Shooter PID
+    public static final double SHOOTER_KP = 0;
+    public static final double SHOOTER_KI = 0;
+    public static final double SHOOTER_KD = 0;
+    public static final double SHOOTER_KS = 0;
+    public static final double SHOOTER_KG = 0;
+    public static final double SHOOTER_KV = 0;
+    public static final double SHOOTER_KA = 0;
+    public static final double ARM_MAX_VELOCITY = 0;
+    public static final double ARM_MAX_ACCELERATION = 0;
   }
 
-  public final class IntakeConstants {
-    public static final double LIFT_SPEED = 0;
-    public static final double SPIN_SPEED = 0;
+  public static final class IntakeConstants {
+    public static final double LIFT_SPEED = -0.4; // Negative to make the lift go in the correct direction
+    public static final double SPIN_SPEED = -0.75; // Negative to make the wheels spin in the correct direction
   }
 
-  public final class ClimberConstants {
-    public static final double CLIMBER_SPEED = 0;
+  public static final class ClimberConstants {
+    public static final double CLIMBER_SPEED = -0.5; // Negative to make the climber go in the correct direction
+  }
+
+  public static final class Kicker_Vector_Constants {
+    // Kicker Constants
+    public static final double KICKER_SPEED = 1;
+
+    // Vector Constants
+    public static final double VECTOR_WHEELS_SPEED = 1;
   }
 }

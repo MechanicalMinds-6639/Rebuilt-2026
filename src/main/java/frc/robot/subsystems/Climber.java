@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.SparkMaxIDs;
 
@@ -34,17 +35,39 @@ public class Climber extends SubsystemBase {
  
   }
 
-  //The command makes the climber go up
-  public Command ClimberUp() {
+  // This method makes the climber go up
+  public void ClimberUp() {
+    leftClimber.set(ClimberConstants.CLIMBER_SPEED);
+  }
+
+  // This command makes the climber go up
+  public Command ClimberUpCommand() {
     return run(() -> {
       leftClimber.set(ClimberConstants.CLIMBER_SPEED);
     });
   }
 
-  //This command makes the climber go down
-  public Command ClimberDown() {
+  // This method makes the climber go down
+  public void ClimberDown() {
+    leftClimber.set(-ClimberConstants.CLIMBER_SPEED);
+  }
+
+  // The command makes the climber go down
+  public Command ClimberDownCommand() {
     return run(() -> {
       leftClimber.set(-ClimberConstants.CLIMBER_SPEED);
+    });
+  }
+
+  // This method stops the climber
+  public void ClimberStop() {
+    leftClimber.set(0);
+  }
+
+  // The command makes the climber go up
+  public Command ClimberStopCommand() {
+    return run(() -> {
+      leftClimber.set(0);
     });
   }
 

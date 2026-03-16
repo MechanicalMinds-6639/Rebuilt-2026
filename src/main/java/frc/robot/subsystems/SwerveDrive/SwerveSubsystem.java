@@ -7,6 +7,7 @@ package frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.SwerveDriveConstants;
 
 import java.io.File;
 import java.util.Arrays;
@@ -42,22 +43,22 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public SwerveSubsystem(File directory) {
 
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW; //TODO LOWER THIS AT COMP, SLOWS COMPUTATION
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; // TODO LOWER THIS AT COMP, SLOWS COMPUTATION
 
     try {
-      swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED);
+      swerveDrive = new SwerveParser(directory).createSwerveDrive(SwerveDriveConstants.MAX_SPEED);
     } catch (Exception e) {
-      throw new RuntimeException(e); //In case it cannot find the JSON files in the deploy directory
+      throw new RuntimeException(e); // In case it cannot find the JSON files in the deploy directory
     }
 
-    swerveDrive.setHeadingCorrection(false); // true if using setpoint heading, false if using angular velocity, maybe tie to a sendable chooser or constant
+    swerveDrive.setHeadingCorrection(false); // true if using setpoint heading, false if using angular velocity, maybe
+                                             // tie to a sendable chooser or constant
     swerveDrive.setCosineCompensator(false);
     swerveDrive.setAngularVelocityCompensation(true, true, 0.1);
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1);
 
     setupPathPlanner();
   }
-
 
   @Override
   public void periodic() {
@@ -68,7 +69,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config;
-    
+
     try {
       config = RobotConfig.fromGUISettings();
 
@@ -143,7 +144,6 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
-    System.out.println("hi");
     return run(() -> {
       swerveDrive.driveFieldOriented(velocity.get());
     });

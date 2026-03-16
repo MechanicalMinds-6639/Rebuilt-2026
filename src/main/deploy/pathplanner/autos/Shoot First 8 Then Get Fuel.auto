@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "First 8 Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot First 8"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center To Left"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Across Trench"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Middle To Fuel"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Fuel"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
