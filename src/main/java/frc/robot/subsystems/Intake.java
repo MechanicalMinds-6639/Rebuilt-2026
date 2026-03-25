@@ -4,133 +4,116 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.SparkMaxIDs;
-import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.SparkMaxIDs;
 
 public class Intake extends SubsystemBase {
 
-  private double SetPointHeight = 0.0;
-  private boolean liftRunning = false;
-
   // These are the class members
-  SparkMax intakeLift = new SparkMax(SparkMaxIDs.INTAKE_LIFT, MotorType.kBrushless);
-  SparkMax intakeSpinny = new SparkMax(SparkMaxIDs.INTAKE_SPINNY, MotorType.kBrushless);
+  SparkMax intakeLiftMax = new SparkMax(SparkMaxIDs.INTAKE_LIFT, MotorType.kBrushless);
+  SparkMax intakeSpinnyMax = new SparkMax(SparkMaxIDs.INTAKE_SPINNY, MotorType.kBrushless);
 
   /** Creates a new Intake. */
   public Intake() {
     SparkMaxConfig IntakeLiftConfig = new SparkMaxConfig();
     IntakeLiftConfig.smartCurrentLimit(40);
-    intakeLift.configure(IntakeLiftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    intakeLiftMax.configure(IntakeLiftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig IntakeSpinnyConfig = new SparkMaxConfig();
     IntakeSpinnyConfig.smartCurrentLimit(40);
-    intakeSpinny.configure(IntakeSpinnyConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    intakeSpinnyMax.configure(IntakeSpinnyConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   // This method lowers the intake lift
-  public void IntakeLiftDown() {
-    intakeLift.set(IntakeConstants.LIFT_SPEED);
+  public void intakeLiftDown() {
+    intakeLiftMax.set(IntakeConstants.LIFT_SPEED);
   }
 
   // This command lowers the intake lift
-  public Command IntakeLiftDownCommand() {
+  public Command intakeLiftDownCommand() {
     return run(() -> {
-      intakeLift.set(IntakeConstants.LIFT_SPEED);
+      intakeLiftMax.set(IntakeConstants.LIFT_SPEED);
     });
   }
 
   // This method raises the intake lift
-  public void IntakeLiftUp() {
-    intakeLift.set(-IntakeConstants.LIFT_SPEED);
+  public void intakeLiftUp() {
+    intakeLiftMax.set(-IntakeConstants.LIFT_SPEED);
   }
 
   // This command raises the intake lift
-  public Command IntakeLiftUpCommand() {
+  public Command intakeLiftUpCommand() {
     return run(() -> {
-      intakeLift.set(-IntakeConstants.LIFT_SPEED);
+      intakeLiftMax.set(-IntakeConstants.LIFT_SPEED);
     });
   }
 
   // This method makes the intake go spinny
-  public void IntakeSpinny() {
-    intakeSpinny.set(IntakeConstants.SPIN_SPEED);
+  public void intakeSpinny() {
+    intakeSpinnyMax.set(IntakeConstants.SPIN_SPEED);
   }
 
   // This command makes the intake go spinnyyyyyyyyyyyyyyyyyyyyyyyyyyyyy :)
-  public Command IntakeSpinnyCommand() {
+  public Command intakeSpinnyCommand() {
     return run(() -> {
-      intakeSpinny.set(IntakeConstants.SPIN_SPEED);
+      intakeSpinnyMax.set(IntakeConstants.SPIN_SPEED);
     });
   }
 
   // This method makes the intake go reverse spinny
-  public void IntakeReverseSpinny() {
-    intakeSpinny.set(-IntakeConstants.SPIN_SPEED);
+  public void intakeReverseSpinny() {
+    intakeSpinnyMax.set(-IntakeConstants.SPIN_SPEED);
   }
 
   // This command makes the intake go reverse spinny
-  public Command IntakeReverseCommand() {
+  public Command intakeReverseCommand() {
     return run(() -> {
-      intakeSpinny.set(-IntakeConstants.SPIN_SPEED);
+      intakeSpinnyMax.set(-IntakeConstants.SPIN_SPEED);
     });
   }
 
   // This method makes the intake stop going spinny
-  public void IntakeStopSpinny() {
-    intakeSpinny.set(0);
+  public void intakeStopSpinny() {
+    intakeSpinnyMax.set(0);
   }
 
   // This command makes the intake stop going spinny
-  public Command IntakeStopSpinnyCommand() {
+  public Command intakeStopSpinnyCommand() {
     return run(() -> {
-      intakeSpinny.set(0);
+      intakeSpinnyMax.set(0);
     });
   }
 
   // Command that allows joystick control of the intake lift and runs intake in reverse when the intake moves upward
-  public Command IntakeCommand(CommandXboxController copilotController) {
+  public Command intakeCommand(CommandXboxController copilotController) {
     return run(() -> {
 
       if (Math.abs(copilotController.getLeftY()) > OperatorConstants.DEADBAND) {
-        intakeLift.set(-copilotController.getLeftY() * IntakeConstants.LIFT_SPEED);
-        liftRunning = true;
+        intakeLiftMax.set(-copilotController.getLeftY() * IntakeConstants.LIFT_SPEED);
       } 
       else if (copilotController.b().getAsBoolean()) {
-        IntakeStopSpinny();
+       intakeStopSpinny();
       }
       else if (copilotController.x().getAsBoolean()) {
-        IntakeSpinny();
+        intakeSpinny();
       }
       else if (copilotController.y().getAsBoolean()) {
-        IntakeReverseSpinny();
+        intakeReverseSpinny();
       }
       else {
-        intakeLift.set(0);
-        liftRunning = false;
+        intakeLiftMax.set(0);
       }
-      
-      /*
-      // If statment that runs the intake spinny wheels in reverse when the intake lift moves upwards
-      if ((liftRunning == true) && (Math.abs(copilotController.getLeftY()) > OperatorConstants.DEADBAND) && copilotController.getLeftY() > 0) {
-        IntakeReverseSpinny();
-      }
-      else {
-        intakeSpinny.set(0);
-      }
-      */
-      
-    
+     
     });
   }
 
@@ -140,24 +123,24 @@ public class Intake extends SubsystemBase {
     return run(() -> {
 
       if (driverController.leftTrigger().getAsBoolean()) {
-        IntakeLiftUp();
-        IntakeReverseSpinny(); // May cause problems, comment out if needed
+        intakeLiftUp();
+        intakeReverseSpinny(); // May cause problems, comment out if needed
       } 
       else if (driverController.rightTrigger().getAsBoolean()) {
-        IntakeLiftDown();
+        intakeLiftDown();
       }
       else if (driverController.a().getAsBoolean()) {
-        IntakeSpinny();
+        intakeSpinny();
       }
       else if (driverController.b().getAsBoolean()) {
-        IntakeStopSpinny();
+        intakeStopSpinny();
       }
       else if (driverController.y().getAsBoolean()) {
-        IntakeReverseSpinny();
+        intakeReverseSpinny();
       }
       else {
-        intakeLift.set(0);
-        intakeSpinny.set(0);
+        intakeLiftMax.set(0);
+        intakeSpinnyMax.set(0);
       }
     
     });

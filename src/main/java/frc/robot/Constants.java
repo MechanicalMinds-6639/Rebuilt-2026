@@ -34,8 +34,7 @@ public final class Constants {
     public static final int LEFT_FLY_WHEEL = 9;
     public static final int RIGHT_FLY_WHEEL = 10;
     public static final int KICKER = 11;
-    public static final int LEFT_VECTOR_WHEELS = 12;
-    public static final int RIGHT_VECTOR_WHEELS = 13;
+    public static final int ROLLERS = 12;
     public static final int INTAKE_LIFT = 14;
     public static final int INTAKE_SPINNY = 15;
     public static final int LEFT_CLIMBER = 16;
@@ -66,11 +65,12 @@ public final class Constants {
     public static final double CLIMBER_SPEED = -0.5; // Negative to make the climber go in the correct direction
   }
 
-  public static final class Kicker_Vector_Constants {
+  public static final class KickerConstants {
     // Kicker Constants
     public static final double KICKER_SPEED = 1;
+  }
 
-    // Vector Constants
-    public static final double VECTOR_WHEELS_SPEED = 1;
+  public static final class RollerConstants {
+    public static final double ROLLER_SPEED = 0.5;
   }
 }

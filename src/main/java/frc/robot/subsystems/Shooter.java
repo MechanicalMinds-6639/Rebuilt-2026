@@ -4,17 +4,12 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -24,8 +19,8 @@ import frc.robot.Constants.SparkMaxIDs;
 public class Shooter extends SubsystemBase {
 
   // These are the class members
-  SparkMax leftFlyWheel = new SparkMax(SparkMaxIDs.LEFT_FLY_WHEEL, MotorType.kBrushless);
-  SparkMax rightFlyWheel = new SparkMax(SparkMaxIDs.RIGHT_FLY_WHEEL, MotorType.kBrushless);
+  SparkMax leftFlyWheelMax = new SparkMax(SparkMaxIDs.LEFT_FLY_WHEEL, MotorType.kBrushless);
+  SparkMax rightFlyWheelMax = new SparkMax(SparkMaxIDs.RIGHT_FLY_WHEEL, MotorType.kBrushless);
 
   /* 
   // PID Controllers
@@ -46,48 +41,47 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     SparkMaxConfig LeftFlyWheelConfig = new SparkMaxConfig();
     LeftFlyWheelConfig.smartCurrentLimit(40);
-    leftFlyWheel.configure(LeftFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    leftFlyWheelMax.configure(LeftFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig RightFlyWheelConfig = new SparkMaxConfig();
     RightFlyWheelConfig.smartCurrentLimit(40);
-    RightFlyWheelConfig.follow(leftFlyWheel, true); // Makes the right flywheel motor follow the left one, also inverts
-                                                    // it
-    rightFlyWheel.configure(RightFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    RightFlyWheelConfig.follow(leftFlyWheelMax, true); // Makes the right flywheel motor follow the left one, also inverts it
+    rightFlyWheelMax.configure(RightFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   // This method makes flywheels go weeee
-  public void ShooterOn() {
-    leftFlyWheel.set(ShooterConstants.SHOOTING_SPEED);
+  public void shooterOn() {
+    leftFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
   }
 
   // This command makes flywheels go weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ;)
-  public Command ShooterOnCommand() {
+  public Command shooterOnCommand() {
     return run(() -> {
-      leftFlyWheel.set(ShooterConstants.SHOOTING_SPEED);
+      leftFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
     });
   }
 
   // This method turns the flywheels to the shooter off
-  public void ShooterOff() {
-    leftFlyWheel.set(0);
+  public void shooterOff() {
+    leftFlyWheelMax.set(0);
   }
 
   // This command turns the flywheels to the shooter off
-  public Command ShooterOffCommand() {
+  public Command shooterOffCommand() {
     return run(() -> {
-      leftFlyWheel.set(0);
+      leftFlyWheelMax.set(0);
     });
   }
 
-  public Command ShooterCommand(CommandXboxController driverController, CommandXboxController copilotController) {
+  public Command shooterCommand(CommandXboxController driverController, CommandXboxController copilotController) {
     return run(() -> {
 
-      if (driverController.getHID().getLeftBumper() || copilotController.getHID().getLeftBumper()) {
-        ShooterOff();
+      if (driverController.leftBumper().getAsBoolean() || copilotController.leftBumper().getAsBoolean()) {
+        shooterOff();
       }
 
-      if (driverController.getHID().getRightBumper() || copilotController.getHID().getRightBumper()) {
-        ShooterOn();
+      if (driverController.rightBumper().getAsBoolean() || copilotController.rightBumper().getAsBoolean()) {
+        shooterOn();
       }
 
     });

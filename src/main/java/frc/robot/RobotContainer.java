@@ -15,12 +15,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Kicker_Vector;
+import frc.robot.subsystems.Kicker;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -40,7 +40,8 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
-  private final Kicker_Vector kicker_vector = new Kicker_Vector();
+  private final Kicker kicker = new Kicker();
+  private final Rollers rollers = new Rollers();
 
   // Creates the Xbox Controllers
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.DRIVER);
@@ -77,12 +78,12 @@ public class RobotContainer {
     DriverStation.silenceJoystickConnectionWarning(true);
 
     // AUTO COMMANDS
-    NamedCommands.registerCommand("Shoot First 8", (shooter.ShooterOnCommand().andThen(kicker_vector.KickerOnCommand())
-      .andThen(kicker_vector.VexWheelsOnCommand())).withTimeout(4));
-    NamedCommands.registerCommand("Shoot First 8 For Longer", shooter.ShooterOnCommand());
-    NamedCommands.registerCommand("Kicker", kicker_vector.KickerOnCommand());
-    NamedCommands.registerCommand("Vector Wheels", kicker_vector.VexWheelsOnCommand());
-    NamedCommands.registerCommand("Intake Fuel", intake.IntakeLiftDownCommand().withTimeout(1).andThen(intake.IntakeSpinnyCommand()).withTimeout(3));
+    NamedCommands.registerCommand("Shoot First 8", (shooter.shooterOnCommand().andThen(kicker.kickerOnCommand()))
+      .withTimeout(4));
+    NamedCommands.registerCommand("Shoot First 8 For Longer", shooter.shooterOnCommand());
+    NamedCommands.registerCommand("Kicker", kicker.kickerOnCommand());
+    NamedCommands.registerCommand("Intake Fuel", intake.intakeLiftDownCommand().withTimeout(1).andThen(intake.intakeSpinnyCommand())
+      .withTimeout(3));
 
     // Builds an auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -101,9 +102,10 @@ public class RobotContainer {
     //// One Controller Set-Up
     driverController.a().onTrue(Commands.runOnce(driveBase::zeroGyro)); // Zeros the gyro
     //
-    shooter.setDefaultCommand(shooter.ShooterCommand(driverController, copilotController)); // Controls the shooter
-    kicker_vector.setDefaultCommand(kicker_vector.HopperCommand(driverController, copilotController)); // Controls the kicker and vector wheels
-    intake.setDefaultCommand(intake.OneControllerIntakeCommand(driverController));
+    shooter.setDefaultCommand(shooter.shooterCommand(driverController, copilotController)); // Controls the shooter
+    kicker.setDefaultCommand(kicker.kickerCommand(driverController, copilotController)); // Controls the kicker
+    rollers.setDefaultCommand(rollers.rollersCommand(driverController, copilotController)); // Controls the rollers
+    intake.setDefaultCommand(intake.OneControllerIntakeCommand(driverController)); // Controls the intake lift motion and the intake spinny
     //
     driverController.povUp().whileTrue(climber.ClimberDownCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber down when held
     driverController.povRight().whileTrue(driveBase.centerModulesCommand()); // Zeros the wheels
@@ -118,10 +120,11 @@ public class RobotContainer {
     // driverController.b().whileTrue(climber.ClimberDownCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber down when held
     driverController.y().onTrue(Commands.runOnce(driveBase::zeroGyro)); // Zeros the gyro
     // System.out.println("brad");
-    shooter.setDefaultCommand(shooter.ShooterCommand(driverController, copilotController)); // Controls the shooter
-    kicker_vector.setDefaultCommand(kicker_vector.HopperCommand(driverController, copilotController)); // Controls the kicker and vector wheels
+    shooter.setDefaultCommand(shooter.shooterCommand(driverController, copilotController)); // Controls the shooter
+    kicker.setDefaultCommand(kicker.kickerCommand(driverController, copilotController)); // Controls the kicker
+    rollers.setDefaultCommand(rollers.rollersCommand(driverController, copilotController)); // Controls the rollers
     ///
-    intake.setDefaultCommand(intake.IntakeCommand(copilotController)); // Controls the intake lift motion and the intake spinny 
+    intake.setDefaultCommand(intake.intakeCommand(copilotController)); // Controls the intake lift motion and the intake spinny 
     ////
     
   }
