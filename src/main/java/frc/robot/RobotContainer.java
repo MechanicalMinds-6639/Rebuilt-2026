@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Roller;
@@ -39,9 +38,9 @@ public class RobotContainer {
   private final SwerveSubsystem driveBase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
-  private final Climber climber = new Climber();
+  // private final Climber climber = new Climber();
   private final Kicker kicker = new Kicker();
-  private final Roller rollers = new Roller();
+  private final Roller roller = new Roller();
 
   // Creates the Xbox Controllers
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.DRIVER);
@@ -104,7 +103,7 @@ public class RobotContainer {
     //
     shooter.setDefaultCommand(shooter.shooterCommand(driverController, copilotController)); // Controls the shooter
     kicker.setDefaultCommand(kicker.kickerCommand(driverController, copilotController)); // Controls the kicker
-    rollers.setDefaultCommand(rollers.rollersCommand(driverController, copilotController)); // Controls the rollers
+    roller.setDefaultCommand(roller.rollerCommand(driverController, copilotController)); // Controls the roller
     intake.setDefaultCommand(intake.OneControllerIntakeCommand(driverController)); // Controls the intake lift motion and the intake spinny
     //
     driverController.povUp().whileTrue(climber.ClimberDownCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber down when held
@@ -122,7 +121,9 @@ public class RobotContainer {
     // System.out.println("brad");
     shooter.setDefaultCommand(shooter.shooterCommand(driverController, copilotController)); // Controls the shooter
     kicker.setDefaultCommand(kicker.kickerCommand(driverController, copilotController)); // Controls the kicker
-    rollers.setDefaultCommand(rollers.rollerCommand(driverController, copilotController)); // Controls the rollers
+    roller.setDefaultCommand(roller.rollerCommand(driverController, copilotController)); // Controls the roller
+    //
+    driverController.povRight().whileTrue(roller.jiggleRollerCommand()); // Jiggles the roller back and forth
     ///
     intake.setDefaultCommand(intake.intakeCommand(copilotController)); // Controls the intake lift motion and the intake spinny 
     ////

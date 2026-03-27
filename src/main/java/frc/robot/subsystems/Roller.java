@@ -11,7 +11,9 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.RollerConstants;
 import frc.robot.Constants.SparkMaxIDs;
@@ -20,8 +22,6 @@ public class Roller extends SubsystemBase {
 
   // These are the class members
   SparkMax rollerMax = new SparkMax(SparkMaxIDs.ROLLERS, MotorType.kBrushless);
-
-  boolean rollerRunning = false;
 
   /** Creates a new Roller. */
   public Roller() {
@@ -54,54 +54,16 @@ public class Roller extends SubsystemBase {
     });
   }
 
-  // This method runs the roller forwards then backwards repeatedly to keep fuel moving
-  public void jiggleRoller() {
-
-    boolean jiggleForward = true;
-    boolean jiggleBackward = false;
-
-    while (rollerRunning) {
-      
-      if (jiggleForward) {
-        rollerMax.set(RollerConstants.ROLLER_SPEED);
-        jiggleForward = false;
-        jiggleBackward = true;
-      }
-
-      if (jiggleBackward) {
-        rollerMax.set(-RollerConstants.ROLLER_SPEED);
-        jiggleBackward = false;
-        jiggleForward = true;
-      }
-
-    }
-
-  }
-
-  // This command runs the roller forwards then backwards repeatedly to keep fuel moving
+  // This command runs the rollers forwards then backwards repeatedly to keep fuel moving
   public Command jiggleRollerCommand() {
-    return run(() -> {
+    return new SequentialCommandGroup(
+        runOnce(() -> rollerMax.set(RollerConstants.ROLLER_SPEED)),
+        new WaitCommand(0.5),
+
+        runOnce(() -> rollerMax.set(-RollerConstants.ROLLER_SPEED)),
+        new WaitCommand(0.5)
       
-      boolean jiggleForward = true;
-      boolean jiggleBackward = false;
-
-      while (rollerRunning) {
-
-        if (jiggleForward) {
-          rollerMax.set(RollerConstants.ROLLER_SPEED);
-          jiggleForward = false;
-          jiggleBackward = true;
-        }
-
-        if (jiggleBackward) {
-          rollerMax.set(-RollerConstants.ROLLER_SPEED);
-          jiggleBackward = false;
-          jiggleForward = true;
-        }
-
-      }
-    
-    });
+    ).repeatedly();
   }
 
   // This method stops the roller
@@ -115,7 +77,6 @@ public class Roller extends SubsystemBase {
       rollerMax.set(0);
     });
   }
-
 
   public Command rollerCommand(CommandXboxController driverController, CommandXboxController copilotController) {
     return run(() -> {
@@ -131,12 +92,6 @@ public class Roller extends SubsystemBase {
       if (copilotController.povUp().getAsBoolean()) {
         rollerReverse();
       }
-      
-      while (copilotController.povRight().getAsBoolean()) {
-        rollerRunning = true;
-        jiggleRoller();
-      } 
-      rollerRunning = false; // Runs when while loop breaks
 
     });
   }

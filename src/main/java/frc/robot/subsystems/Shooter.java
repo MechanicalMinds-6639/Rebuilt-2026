@@ -5,11 +5,16 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,20 +27,25 @@ public class Shooter extends SubsystemBase {
   SparkMax leftFlyWheelMax = new SparkMax(SparkMaxIDs.LEFT_FLY_WHEEL, MotorType.kBrushless);
   SparkMax rightFlyWheelMax = new SparkMax(SparkMaxIDs.RIGHT_FLY_WHEEL, MotorType.kBrushless);
 
-  /* 
+  RelativeEncoder leftFlyWheelEncoder = leftFlyWheelMax.getEncoder();
+  RelativeEncoder rightFlyWheelEncoder = rightFlyWheelMax.getEncoder();
+
+  double leftFlyWheelRPM = leftFlyWheelEncoder.getVelocity();
+  double rightFlyWheelRPM = rightFlyWheelEncoder.getVelocity();
+
   // PID Controllers
-  private final ProfiledPIDController ShooterController = new ProfiledPIDController(
+  private final ProfiledPIDController shooterController = new ProfiledPIDController(
       ShooterConstants.SHOOTER_KP,
       ShooterConstants.SHOOTER_KI,
       ShooterConstants.SHOOTER_KD,
       new Constraints(ShooterConstants.ARM_MAX_VELOCITY,
           ShooterConstants.ARM_MAX_ACCELERATION));
-  private final SimpleMotorFeedforward ShooterFeedforward = new SimpleMotorFeedforward(
+
+  private final SimpleMotorFeedforward shooterFeedforward = new SimpleMotorFeedforward(
       ShooterConstants.SHOOTER_KS,
       ShooterConstants.SHOOTER_KG,
       ShooterConstants.SHOOTER_KV,
       ShooterConstants.SHOOTER_KA);
-  */
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -45,31 +55,38 @@ public class Shooter extends SubsystemBase {
 
     SparkMaxConfig RightFlyWheelConfig = new SparkMaxConfig();
     RightFlyWheelConfig.smartCurrentLimit(40);
-    RightFlyWheelConfig.follow(leftFlyWheelMax, true); // Makes the right flywheel motor follow the left one, also inverts it
     rightFlyWheelMax.configure(RightFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    LeftFlyWheelConfig.inverted(false);
+    RightFlyWheelConfig.inverted(true); // Inverts the right flywheel 
   }
 
   // This method makes flywheels go weeee
   public void shooterOn() {
     leftFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
+    rightFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
   }
 
   // This command makes flywheels go weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ;)
   public Command shooterOnCommand() {
     return run(() -> {
       leftFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
+      rightFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
     });
   }
 
   // This method turns the flywheels to the shooter off
   public void shooterOff() {
     leftFlyWheelMax.set(0);
+    rightFlyWheelMax.set(0);
+
   }
 
   // This command turns the flywheels to the shooter off
   public Command shooterOffCommand() {
     return run(() -> {
       leftFlyWheelMax.set(0);
+      rightFlyWheelMax.set(0);
     });
   }
 
@@ -87,16 +104,15 @@ public class Shooter extends SubsystemBase {
     });
   }
 
-  /*
-  public void reachGoal(double goalDegrees) {
-    double goal = Degrees.of(goalDegrees).in(Rotations) * CraneConstants.ARM_REDUCTION;
-    double clampedValue = MathUtil.clamp(
-        ArmFeedforward.calculate(ArmController.getSetpoint().position, ArmController.getSetpoint().velocity)
-            + ArmController.calculate(ArmEncoder.getPosition(), goal),
-        -7, 7);
-    ArmMax.setVoltage(clampedValue);
+  public void reachShooterSpeed(double percent) {
+    double targetRPM = percent * ShooterConstants.MAX_RPM; // Convers percentage to target RPM
+    double avgRPM = (leftFlyWheelRPM + rightFlyWheelRPM) / 2.0; // Average RPM of both flywheels
+    double output = MathUtil.clamp(shooterController.calculate(avgRPM, targetRPM)
+        + shooterFeedforward.calculate(targetRPM), -12, 12); // PID + Feedforward
+
+    leftFlyWheelMax.setVoltage(output); // setVoltage() accounts for battery sag
+    rightFlyWheelMax.setVoltage(output);
   }
-  */
 
   @Override
   public void periodic() {

@@ -54,6 +54,8 @@ public final class Constants {
     public static final double SHOOTER_KA = 0;
     public static final double ARM_MAX_VELOCITY = 0;
     public static final double ARM_MAX_ACCELERATION = 0;
+
+    public static final double MAX_RPM = 5600; // Rounded down from max of 5676 RPM to be safe
   }
 
   public static final class IntakeConstants {
