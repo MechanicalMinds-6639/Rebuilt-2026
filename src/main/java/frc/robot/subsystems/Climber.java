@@ -17,12 +17,15 @@ import frc.robot.Constants.SparkMaxIDs;
 
 public class Climber extends SubsystemBase {
 
+  /* 
   // These are the class members
   SparkMax leftClimberMax = new SparkMax(SparkMaxIDs.LEFT_CLIMBER, MotorType.kBrushless);
   SparkMax rightClimberMax = new SparkMax(SparkMaxIDs.RIGHT_CLIMBER, MotorType.kBrushless);
+  */
 
   /** Creates a new Climber. */
   public Climber() {
+    /*
     SparkMaxConfig LeftClimberConfig = new SparkMaxConfig();
     LeftClimberConfig.smartCurrentLimit(40);
     leftClimberMax.configure(LeftClimberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -31,8 +34,9 @@ public class Climber extends SubsystemBase {
     RightClimberConfig.smartCurrentLimit(40);
     RightClimberConfig.follow(leftClimberMax, true); // Makes the right climber motor follow the left one, also inverts it
     rightClimberMax.configure(RightClimberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    */
   }
-
+    /*
   // This method makes the climber go up
   public void ClimberUp() {
     leftClimberMax.set(ClimberConstants.CLIMBER_SPEED);
@@ -68,7 +72,7 @@ public class Climber extends SubsystemBase {
       leftClimberMax.set(0);
     });
   }
-
+  */
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

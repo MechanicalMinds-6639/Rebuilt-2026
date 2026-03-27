@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 3.3403708987161194,
-        "y": 7.483152639087019
+        "y": 0.7032952924393738
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.993367629353878,
-        "y": 7.488875650691922
+        "x": 4.340370898716119,
+        "y": 0.7032952924393738
       },
       "isLocked": false,
-      "linkedName": "Left Trench Endpoint"
+      "linkedName": "Start Right Trench"
     },
     {
       "anchor": {
-        "x": 5.371740370898715,
-        "y": 7.494277777777777
+        "x": 6.316262482168331,
+        "y": 0.5868473609129818
       },
       "prevControl": {
-        "x": 4.950594071361074,
-        "y": 7.4702130551163215
+        "x": 5.316262482168331,
+        "y": 0.5868473609129818
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Across Trench Endpoint"
+      "linkedName": "Right Trench to Field"
     }
   ],
   "rotationTargets": [],
@@ -41,13 +41,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.5,
-    "rotation": 0.0
+    "velocity": 0,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Trench",
+  "folder": "New Folder",
   "idealStartingState": {
-    "velocity": 1.0,
+    "velocity": 0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true

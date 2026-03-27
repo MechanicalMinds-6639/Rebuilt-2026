@@ -4,9 +4,13 @@
   "holonomicMode": true,
   "pathFolders": [
     "Basic Autos",
-    "Trench",
+    "Middle, Then Back and Shoot",
+    "New Folder",
+    "New New Folder",
+    "New New New Folder",
     "Score 8 Then Get Fuel",
-    "Score 8, Get Fuel, Come Back"
+    "Score 8, Get Fuel, Come Back",
+    "Trench"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

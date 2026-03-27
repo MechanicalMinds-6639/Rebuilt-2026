@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3403708987161194,
-        "y": 7.483152639087019
+        "x": 6.213922222222224,
+        "y": 7.4702139800285305
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.993367629353878,
-        "y": 7.488875650691922
+        "x": 5.093993548898401,
+        "y": 7.4702139800285305
       },
       "isLocked": false,
-      "linkedName": "Left Trench Endpoint"
+      "linkedName": "Field Middle"
     },
     {
       "anchor": {
-        "x": 5.371740370898715,
-        "y": 7.494277777777777
+        "x": 3.3403708987161194,
+        "y": 7.483152639087019
       },
       "prevControl": {
-        "x": 4.950594071361074,
-        "y": 7.4702130551163215
+        "x": 3.590322461967733,
+        "y": 7.488073617452604
+      },
+      "nextControl": {
+        "x": 3.0904193354645058,
+        "y": 7.478231660721435
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.3403708987161194,
+        "y": 4.00265335235378
+      },
+      "prevControl": {
+        "x": 3.215395117090312,
+        "y": 5.7080958588913875
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Across Trench Endpoint"
+      "linkedName": "First 8 Endpoint"
     }
   ],
   "rotationTargets": [],
@@ -41,13 +57,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.5,
-    "rotation": 0.0
+    "velocity": 0,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Trench",
+  "folder": "Middle, Then Back and Shoot",
   "idealStartingState": {
-    "velocity": 1.0,
+    "velocity": 0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true

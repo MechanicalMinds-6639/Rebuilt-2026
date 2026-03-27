@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.617574893009986,
-        "y": 0.6127246790299581
+        "x": 6.160998573466477,
+        "y": 0.5868473609129818
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.096746922821475,
-        "y": 0.612724679029958
+        "x": 5.640170603277966,
+        "y": 0.5868473609129817
       },
       "isLocked": false,
       "linkedName": "Fuel To Right Trench (Middle) Endpoint"

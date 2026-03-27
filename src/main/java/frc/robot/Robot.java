@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -81,10 +82,21 @@ public class Robot extends TimedRobot {
     m_robotContainer.resetGyro();
   }
 
+
+  // This MUST match the name in your Limelight Web Dashboard exactly
+  private final String limelightName = "limelight-oasis";
+
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     //System.out.println("yello says the frog");
+
+    var table = NetworkTableInstance.getDefault().getTable(limelightName);
+
+        double tv = table.getEntry("tv").getDouble(0); // Is target visible?
+        double tx = table.getEntry("tx").getDouble(0); // Degrees off center
+
+    // System.out.println(tx);
   }
 
   @Override

@@ -16,60 +16,60 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.RollerConstants;
 import frc.robot.Constants.SparkMaxIDs;
 
-public class Rollers extends SubsystemBase {
+public class Roller extends SubsystemBase {
 
   // These are the class members
-  SparkMax rollersMax = new SparkMax(SparkMaxIDs.ROLLERS, MotorType.kBrushless);
+  SparkMax rollerMax = new SparkMax(SparkMaxIDs.ROLLERS, MotorType.kBrushless);
 
-  boolean rollersRunning = false;
+  boolean rollerRunning = false;
 
-  /** Creates a new Rollers. */
-  public Rollers() {
-    SparkMaxConfig RollersConfig = new SparkMaxConfig();
-    RollersConfig.smartCurrentLimit(40);
-    rollersMax.configure(RollersConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  /** Creates a new Roller. */
+  public Roller() {
+    SparkMaxConfig RollerConfig = new SparkMaxConfig();
+    RollerConfig.smartCurrentLimit(40);
+    rollerMax.configure(RollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
+ 
+  // This method runs the roller
+  public void rollerOn() {
+    rollerMax.set(RollerConstants.ROLLER_SPEED);
   }
 
-  // This method runs the rollers
-  public void rollersOn() {
-    rollersMax.set(RollerConstants.ROLLER_SPEED);
-  }
-
-  // This command runs the rollers
-  public Command rollersOnCommand() {
+  // This command runs the roller
+  public Command rollerOnCommand() {
     return run(() -> {
-      rollersMax.set(RollerConstants.ROLLER_SPEED);
+      rollerMax.set(RollerConstants.ROLLER_SPEED);
     });
   }
 
-  // This method runs the rollers in reverse
-  public void rollersReverse() {
-    rollersMax.set(-RollerConstants.ROLLER_SPEED);
+  // This method runs the roller in reverse
+  public void rollerReverse() {
+    rollerMax.set(-RollerConstants.ROLLER_SPEED);
   }
 
-  // This command runs the rollers in reverse
-  public Command rollersReverseCommand() {
+  // This command runs the roller in reverse
+  public Command rollerReverseCommand() {
     return run(() -> {
-      rollersMax.set(-RollerConstants.ROLLER_SPEED);
+      rollerMax.set(-RollerConstants.ROLLER_SPEED);
     });
   }
 
-  // This method runs the rollers forwards then backwards repeatedly to keep fuel moving
-  public void jiggleRollers() {
+  // This method runs the roller forwards then backwards repeatedly to keep fuel moving
+  public void jiggleRoller() {
 
     boolean jiggleForward = true;
     boolean jiggleBackward = false;
 
-    while (rollersRunning) {
+    while (rollerRunning) {
       
       if (jiggleForward) {
-        rollersMax.set(RollerConstants.ROLLER_SPEED);
+        rollerMax.set(RollerConstants.ROLLER_SPEED);
         jiggleForward = false;
         jiggleBackward = true;
       }
 
       if (jiggleBackward) {
-        rollersMax.set(-RollerConstants.ROLLER_SPEED);
+        rollerMax.set(-RollerConstants.ROLLER_SPEED);
         jiggleBackward = false;
         jiggleForward = true;
       }
@@ -78,23 +78,23 @@ public class Rollers extends SubsystemBase {
 
   }
 
-  // This command runs the rollers forwards then backwards repeatedly to keep fuel moving
-  public Command jiggleRollersCommand() {
+  // This command runs the roller forwards then backwards repeatedly to keep fuel moving
+  public Command jiggleRollerCommand() {
     return run(() -> {
       
       boolean jiggleForward = true;
       boolean jiggleBackward = false;
 
-      while (rollersRunning) {
+      while (rollerRunning) {
 
         if (jiggleForward) {
-          rollersMax.set(RollerConstants.ROLLER_SPEED);
+          rollerMax.set(RollerConstants.ROLLER_SPEED);
           jiggleForward = false;
           jiggleBackward = true;
         }
 
         if (jiggleBackward) {
-          rollersMax.set(-RollerConstants.ROLLER_SPEED);
+          rollerMax.set(-RollerConstants.ROLLER_SPEED);
           jiggleBackward = false;
           jiggleForward = true;
         }
@@ -104,39 +104,39 @@ public class Rollers extends SubsystemBase {
     });
   }
 
-  // This method stops the rollers
+  // This method stops the roller
   public void rollersOff() {
-    rollersMax.set(0);
+    rollerMax.set(0);
   }
 
-  // This command stops the rollers
-  public Command rollersOffCommand() {
+  // This command stops the roller
+  public Command rollerOffCommand() {
     return run(() -> {
-      rollersMax.set(0);
+      rollerMax.set(0);
     });
   }
 
 
-  public Command rollersCommand(CommandXboxController driverController, CommandXboxController copilotController) {
+  public Command rollerCommand(CommandXboxController driverController, CommandXboxController copilotController) {
     return run(() -> {
 
       if (driverController.leftBumper().getAsBoolean() || copilotController.leftBumper().getAsBoolean()) {
-        rollersOn();
-      }
-
-      if (driverController.rightBumper().getAsBoolean() || copilotController.rightBumper().getAsBoolean()) {
         rollersOff();
       }
 
-      if (copilotController.povRight().getAsBoolean()) {
-        rollersReverse();
+      if (driverController.rightBumper().getAsBoolean() || copilotController.rightBumper().getAsBoolean()) {
+        rollerOn();
+      }
+
+      if (copilotController.povUp().getAsBoolean()) {
+        rollerReverse();
       }
       
       while (copilotController.povRight().getAsBoolean()) {
-        rollersRunning = true;
-        jiggleRollers();
+        rollerRunning = true;
+        jiggleRoller();
       } 
-      rollersRunning = false; // Runs when while loop breaks
+      rollerRunning = false; // Runs when while loop breaks
 
     });
   }

@@ -20,7 +20,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
-import frc.robot.subsystems.Rollers;
+import frc.robot.subsystems.Roller;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -41,7 +41,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
   private final Kicker kicker = new Kicker();
-  private final Rollers rollers = new Rollers();
+  private final Roller rollers = new Roller();
 
   // Creates the Xbox Controllers
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.DRIVER);
@@ -122,7 +122,7 @@ public class RobotContainer {
     // System.out.println("brad");
     shooter.setDefaultCommand(shooter.shooterCommand(driverController, copilotController)); // Controls the shooter
     kicker.setDefaultCommand(kicker.kickerCommand(driverController, copilotController)); // Controls the kicker
-    rollers.setDefaultCommand(rollers.rollersCommand(driverController, copilotController)); // Controls the rollers
+    rollers.setDefaultCommand(rollers.rollerCommand(driverController, copilotController)); // Controls the rollers
     ///
     intake.setDefaultCommand(intake.intakeCommand(copilotController)); // Controls the intake lift motion and the intake spinny 
     ////

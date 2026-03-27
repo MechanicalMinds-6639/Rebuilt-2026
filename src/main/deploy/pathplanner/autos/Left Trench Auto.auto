@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "First 8 Path"
+            "pathName": "Left Trench To Middle"
           }
         },
         {
@@ -19,25 +19,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center To Left"
+            "pathName": "Middle To Fuel"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Left Across Trench"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Middle To Fuel"
+            "pathName": "Copy of Copy of Back To Trench"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Intake Fuel"
+            "name": null
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Back To Trench"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot First 8 For Longer"
           }
         }
       ]

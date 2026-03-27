@@ -35,14 +35,14 @@ public final class Constants {
     public static final int RIGHT_FLY_WHEEL = 10;
     public static final int KICKER = 11;
     public static final int ROLLERS = 12;
-    public static final int INTAKE_LIFT = 14;
-    public static final int INTAKE_SPINNY = 15;
-    public static final int LEFT_CLIMBER = 16;
-    public static final int RIGHT_CLIMBER = 17;
+    public static final int INTAKE_LIFT = 13;
+    public static final int INTAKE_SPINNY = 14;
+    //public static final int LEFT_CLIMBER = 16; // Currently not on the robot
+    //public static final int RIGHT_CLIMBER = 17; // Currently not on the robot
   }
 
   public static final class ShooterConstants {
-    public static final double SHOOTING_SPEED = 1;
+    public static final double SHOOTING_SPEED = -1; // Negative to make the lift go in the correct direction
 
     // Shooter PID
     public static final double SHOOTER_KP = 0;
@@ -57,8 +57,8 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final double LIFT_SPEED = -0.4; // Negative to make the lift go in the correct direction
-    public static final double SPIN_SPEED = -0.75; // Negative to make the wheels spin in the correct direction
+    public static final double LIFT_SPEED = 0.4;
+    public static final double SPIN_SPEED = 0.75;
   }
 
   public static final class ClimberConstants {
@@ -67,7 +67,7 @@ public final class Constants {
 
   public static final class KickerConstants {
     // Kicker Constants
-    public static final double KICKER_SPEED = 1;
+    public static final double KICKER_SPEED = -1; // Negative to make the climber go in the correct direction
   }
 
   public static final class RollerConstants {

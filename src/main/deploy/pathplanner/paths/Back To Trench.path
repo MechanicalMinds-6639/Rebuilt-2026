@@ -1,0 +1,86 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.0,
+        "y": 4.0
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.228852977537081,
+        "y": 3.8993704085648155
+      },
+      "isLocked": false,
+      "linkedName": "Near Hub"
+    },
+    {
+      "anchor": {
+        "x": 6.0,
+        "y": 7.431398002853067
+      },
+      "prevControl": {
+        "x": 6.057489300998574,
+        "y": 6.7974037089871615
+      },
+      "nextControl": {
+        "x": 5.977423142215849,
+        "y": 7.680376486848361
+      },
+      "isLocked": false,
+      "linkedName": "To Trench"
+    },
+    {
+      "anchor": {
+        "x": 3.3403708987161194,
+        "y": 7.483152639087019
+      },
+      "prevControl": {
+        "x": 3.590322461967733,
+        "y": 7.488073617452604
+      },
+      "nextControl": {
+        "x": 3.0904193354645058,
+        "y": 7.478231660721435
+      },
+      "isLocked": false,
+      "linkedName": "Left Trench Endpoint"
+    },
+    {
+      "anchor": {
+        "x": 3.3403708987161194,
+        "y": 4.00265335235378
+      },
+      "prevControl": {
+        "x": 3.215395117090312,
+        "y": 5.708095858891389
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "First 8 Endpoint"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Middle, Then Back and Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
