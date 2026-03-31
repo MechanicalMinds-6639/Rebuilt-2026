@@ -12,7 +12,7 @@
         "y": 7.4702139800285305
       },
       "isLocked": false,
-      "linkedName": "Field Middle"
+      "linkedName": "Field Left Middle"
     },
     {
       "anchor": {
@@ -61,7 +61,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "New Folder",
+  "folder": "Rookie Autos",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

@@ -33,6 +33,7 @@ public class Shooter extends SubsystemBase {
   double leftFlyWheelRPM = leftFlyWheelEncoder.getVelocity();
   double rightFlyWheelRPM = rightFlyWheelEncoder.getVelocity();
 
+  /* 
   // PID Controllers
   private final ProfiledPIDController shooterController = new ProfiledPIDController(
       ShooterConstants.SHOOTER_KP,
@@ -46,6 +47,7 @@ public class Shooter extends SubsystemBase {
       ShooterConstants.SHOOTER_KG,
       ShooterConstants.SHOOTER_KV,
       ShooterConstants.SHOOTER_KA);
+  */
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -55,38 +57,31 @@ public class Shooter extends SubsystemBase {
 
     SparkMaxConfig RightFlyWheelConfig = new SparkMaxConfig();
     RightFlyWheelConfig.smartCurrentLimit(40);
+    RightFlyWheelConfig.follow(leftFlyWheelMax, true); // Makes the right flywheel motor follow the left one, also inverts it
     rightFlyWheelMax.configure(RightFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-    LeftFlyWheelConfig.inverted(false);
-    RightFlyWheelConfig.inverted(true); // Inverts the right flywheel 
   }
 
   // This method makes flywheels go weeee
   public void shooterOn() {
     leftFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
-    rightFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
   }
 
   // This command makes flywheels go weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ;)
   public Command shooterOnCommand() {
     return run(() -> {
       leftFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
-      rightFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
     });
   }
 
   // This method turns the flywheels to the shooter off
   public void shooterOff() {
     leftFlyWheelMax.set(0);
-    rightFlyWheelMax.set(0);
-
   }
 
   // This command turns the flywheels to the shooter off
   public Command shooterOffCommand() {
     return run(() -> {
       leftFlyWheelMax.set(0);
-      rightFlyWheelMax.set(0);
     });
   }
 
@@ -104,6 +99,7 @@ public class Shooter extends SubsystemBase {
     });
   }
 
+  /* 
   public void reachShooterSpeed(double percent) {
     double targetRPM = percent * ShooterConstants.MAX_RPM; // Convers percentage to target RPM
     double avgRPM = (leftFlyWheelRPM + rightFlyWheelRPM) / 2.0; // Average RPM of both flywheels
@@ -113,6 +109,7 @@ public class Shooter extends SubsystemBase {
     leftFlyWheelMax.setVoltage(output); // setVoltage() accounts for battery sag
     rightFlyWheelMax.setVoltage(output);
   }
+  */
 
   @Override
   public void periodic() {

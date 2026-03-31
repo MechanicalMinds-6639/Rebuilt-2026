@@ -17,27 +17,34 @@
           }
         },
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "Middle To Fuel"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Middle To Center Fuel"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Fuel"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Copy of Back To Trench"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
+            "pathName": "Center Fuel Back To Left Trench"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Back To Trench"
+            "pathName": "Left Trench To Center Hub"
           }
         },
         {

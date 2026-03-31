@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 3.3403708987161194,
-        "y": 0.45329529243937394
+        "y": 0.45329529243937383
       },
       "nextControl": {
         "x": 3.3403708987161194,
@@ -61,7 +61,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "New Folder",
+  "folder": "Rookie Autos",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

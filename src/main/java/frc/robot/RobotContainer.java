@@ -48,11 +48,11 @@ public class RobotContainer {
 
   // Code from YAGSL for the SwerveSubsytem
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(driveBase.getSwerveDrive(),
-                                          () -> driverController.getLeftY() * -1, // Multiply by -1 to fix reverse gyroscope/control directions
-                                          () -> driverController.getLeftX() * -1) // Multiply by -1 to fix reverse gyroscope/control directions
+                                          () -> driverController.getLeftY(), // Multiply by -1 to fix reverse gyroscope/control directions
+                                          () -> driverController.getLeftX()) // Multiply by -1 to fix reverse gyroscope/control directions
                                           .withControllerRotationAxis(driverController::getRightX)
                                           .deadband(OperatorConstants.DEADBAND)
-                                          .scaleTranslation(0.8) // If want to go faster, increase number
+                                          .scaleTranslation(1) // If want to go faster, increase number
                                           .allianceRelativeControl(true);
 
   // Code from YAGSL for the SwerveSubsytem
@@ -82,7 +82,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot First 8 For Longer", shooter.shooterOnCommand());
     NamedCommands.registerCommand("Kicker", kicker.kickerOnCommand());
     NamedCommands.registerCommand("Intake Fuel", intake.intakeLiftDownCommand().withTimeout(1).andThen(intake.intakeSpinnyCommand())
-      .withTimeout(3));
+      .withTimeout(4));
 
     // Builds an auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -106,9 +106,10 @@ public class RobotContainer {
     roller.setDefaultCommand(roller.rollerCommand(driverController, copilotController)); // Controls the roller
     intake.setDefaultCommand(intake.OneControllerIntakeCommand(driverController)); // Controls the intake lift motion and the intake spinny
     //
-    driverController.povUp().whileTrue(climber.ClimberDownCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber down when held
-    driverController.povRight().whileTrue(driveBase.centerModulesCommand()); // Zeros the wheels
-    driverController.povDown().whileTrue(climber.ClimberUpCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber up when held
+    // driverController.povUp().whileTrue(climber.ClimberDownCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber down when held
+    // driverController.povDown().whileTrue(climber.ClimberUpCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber up when held
+    driverController.povLeft().whileTrue(driveBase.centerModulesCommand()); // Zeros the wheels
+    driverController.povRight().whileTrue(roller.jiggleRollerCommand()); // Jiggles the roller back and forth
     ////
     */
 
@@ -122,12 +123,11 @@ public class RobotContainer {
     shooter.setDefaultCommand(shooter.shooterCommand(driverController, copilotController)); // Controls the shooter
     kicker.setDefaultCommand(kicker.kickerCommand(driverController, copilotController)); // Controls the kicker
     roller.setDefaultCommand(roller.rollerCommand(driverController, copilotController)); // Controls the roller
-    //
-    driverController.povRight().whileTrue(roller.jiggleRollerCommand()); // Jiggles the roller back and forth
     ///
-    intake.setDefaultCommand(intake.intakeCommand(copilotController)); // Controls the intake lift motion and the intake spinny 
+    intake.setDefaultCommand(intake.intakeCommand(copilotController)); // Controls the intake lift motion and the intake spinny
+    //
+    copilotController.povRight().whileTrue(roller.jiggleRollerCommand()); // Jiggles the roller back and forth 
     ////
-    
   }
 
   private final SendableChooser<Command> autoChooser;
