@@ -11,27 +11,31 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SparkMaxIDs;
+import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 public class Shooter extends SubsystemBase {
 
   // These are the class members
-  SparkMax leftFlyWheelMax = new SparkMax(SparkMaxIDs.LEFT_FLY_WHEEL, MotorType.kBrushless);
-  SparkMax rightFlyWheelMax = new SparkMax(SparkMaxIDs.RIGHT_FLY_WHEEL, MotorType.kBrushless);
+  SparkMax leftFlywheelMax = new SparkMax(SparkMaxIDs.LEFT_FLY_WHEEL, MotorType.kBrushless);
+  SparkMax rightFlywheelMax = new SparkMax(SparkMaxIDs.RIGHT_FLY_WHEEL, MotorType.kBrushless);
 
-  RelativeEncoder leftFlyWheelEncoder = leftFlyWheelMax.getEncoder();
-  RelativeEncoder rightFlyWheelEncoder = rightFlyWheelMax.getEncoder();
+  RelativeEncoder leftFlywheelEncoder = leftFlywheelMax.getEncoder();
+  RelativeEncoder rightFlywheelEncoder = rightFlywheelMax.getEncoder();
 
-  double leftFlyWheelRPM = leftFlyWheelEncoder.getVelocity();
-  double rightFlyWheelRPM = rightFlyWheelEncoder.getVelocity();
+  double leftFlywheelRPM = leftFlywheelEncoder.getVelocity();
+  double rightFlywheelRPM = rightFlywheelEncoder.getVelocity();
+
+  double leftFlywheelPosition = 0;
+  double rightFlywheelPosition = 0;
+  double avgFlywheelPosition = 0;
 
   /* 
   // PID Controllers
@@ -51,49 +55,66 @@ public class Shooter extends SubsystemBase {
 
   /** Creates a new Shooter. */
   public Shooter() {
-    SparkMaxConfig LeftFlyWheelConfig = new SparkMaxConfig();
-    LeftFlyWheelConfig.smartCurrentLimit(40);
-    leftFlyWheelMax.configure(LeftFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    SparkMaxConfig LeftFlywheelConfig = new SparkMaxConfig();
+    LeftFlywheelConfig.smartCurrentLimit(40);
+    leftFlywheelMax.configure(LeftFlywheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    SparkMaxConfig RightFlyWheelConfig = new SparkMaxConfig();
-    RightFlyWheelConfig.smartCurrentLimit(40);
-    RightFlyWheelConfig.follow(leftFlyWheelMax, true); // Makes the right flywheel motor follow the left one, also inverts it
-    rightFlyWheelMax.configure(RightFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    SparkMaxConfig RightFlywheelConfig = new SparkMaxConfig();
+    RightFlywheelConfig.smartCurrentLimit(40);
+    RightFlywheelConfig.follow(leftFlywheelMax, true); // Makes the right flywheel motor follow the left one, also inverts it
+    rightFlywheelMax.configure(RightFlywheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   // This method makes flywheels go weeee
   public void shooterOn() {
-    leftFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
+    leftFlywheelMax.set(ShooterConstants.SHOOTER_ON_SPEED);
   }
 
   // This command makes flywheels go weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee ;)
   public Command shooterOnCommand() {
     return run(() -> {
-      leftFlyWheelMax.set(ShooterConstants.SHOOTING_SPEED);
+      leftFlywheelMax.set(ShooterConstants.SHOOTER_ON_SPEED);
+    });
+  }
+
+  // This method puts the flywheels to the shooter in to rest speed
+  public void shooterRest() {
+    leftFlywheelMax.set(ShooterConstants.SHOOTER_REST_SPEED);
+  }
+
+  // This command puts the flywheels to the shooter in to rest speed
+  public Command shooterRestCommand() {
+    return run(() -> {
+      leftFlywheelMax.set(ShooterConstants.SHOOTER_REST_SPEED);
     });
   }
 
   // This method turns the flywheels to the shooter off
   public void shooterOff() {
-    leftFlyWheelMax.set(0);
+    leftFlywheelMax.set(0);
   }
 
   // This command turns the flywheels to the shooter off
   public Command shooterOffCommand() {
     return run(() -> {
-      leftFlyWheelMax.set(0);
+      leftFlywheelMax.set(0);
     });
   }
+
 
   public Command shooterCommand(CommandXboxController driverController, CommandXboxController copilotController) {
     return run(() -> {
 
       if (driverController.leftBumper().getAsBoolean() || copilotController.leftBumper().getAsBoolean()) {
-        shooterOff();
+        shooterRest();
       }
 
       if (driverController.rightBumper().getAsBoolean() || copilotController.rightBumper().getAsBoolean()) {
         shooterOn();
+      }
+
+      if (driverController.povUp().getAsBoolean() || copilotController.povUp().getAsBoolean()) {
+        shooterOff();
       }
 
     });
@@ -102,17 +123,47 @@ public class Shooter extends SubsystemBase {
   /* 
   public void reachShooterSpeed(double percent) {
     double targetRPM = percent * ShooterConstants.MAX_RPM; // Convers percentage to target RPM
-    double avgRPM = (leftFlyWheelRPM + rightFlyWheelRPM) / 2.0; // Average RPM of both flywheels
+    double avgRPM = (leftFlywheelRPM + rightFlywheelRPM) / 2.0; // Average RPM of both flywheels
     double output = MathUtil.clamp(shooterController.calculate(avgRPM, targetRPM)
         + shooterFeedforward.calculate(targetRPM), -12, 12); // PID + Feedforward
 
-    leftFlyWheelMax.setVoltage(output); // setVoltage() accounts for battery sag
-    rightFlyWheelMax.setVoltage(output);
+    leftFlywheelMax.setVoltage(output); // setVoltage() accounts for battery sag
+    rightFlywheelMax.setVoltage(output);
   }
   */
+
+  private final SysIdRoutine sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(),
+    new SysIdRoutine.Mechanism(
+        (voltage) -> {
+            leftFlywheelMax.setVoltage(voltage.in(Volts));
+            rightFlywheelMax.setVoltage(voltage.in(Volts));
+        },
+        log -> {
+            log.motor("shooter")
+                .voltage(Volts.of(leftFlywheelMax.getAppliedOutput() * 12))
+                .angularVelocity(RotationsPerSecond.of(leftFlywheelEncoder.getVelocity()));
+        },
+        this
+    )
+  );
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    leftFlywheelPosition = leftFlywheelEncoder.getPosition();
+    rightFlywheelPosition = rightFlywheelEncoder.getPosition();
+    avgFlywheelPosition = (leftFlywheelPosition + rightFlywheelPosition) / 2;
+    SmartDashboard.putNumber("leftFlywheelPostion", leftFlywheelPosition);
+    SmartDashboard.putNumber("rightFlywheelPostion", rightFlywheelPosition);
+    SmartDashboard.putNumber("avgFlywheelPostion", avgFlywheelPosition);
   }
 }

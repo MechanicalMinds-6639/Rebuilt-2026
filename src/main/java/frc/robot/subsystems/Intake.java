@@ -119,28 +119,27 @@ public class Intake extends SubsystemBase {
 
 
   // Command that allows joystick control of the intake lift and runs intake in reverse when the intake moves upward
-  public Command OneControllerIntakeCommand(CommandXboxController driverController) {
+  public Command oneControllerIntakeCommand(CommandXboxController driverController) {
     return run(() -> {
 
       if (driverController.leftTrigger().getAsBoolean()) {
         intakeLiftUp();
-        intakeReverseSpinny(); // May cause problems, comment out if needed
+        // intakeReverseSpinny(); // May cause problems, comment out if needed
       } 
       else if (driverController.rightTrigger().getAsBoolean()) {
         intakeLiftDown();
       }
-      else if (driverController.a().getAsBoolean()) {
-        intakeSpinny();
-      }
       else if (driverController.b().getAsBoolean()) {
         intakeStopSpinny();
+      }
+      else if (driverController.x().getAsBoolean()) {
+        intakeSpinny();
       }
       else if (driverController.y().getAsBoolean()) {
         intakeReverseSpinny();
       }
       else {
         intakeLiftMax.set(0);
-        intakeSpinnyMax.set(0);
       }
     
     });

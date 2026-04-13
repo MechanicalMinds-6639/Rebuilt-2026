@@ -57,12 +57,11 @@ public class Roller extends SubsystemBase {
   // This command runs the rollers forwards then backwards repeatedly to keep fuel moving
   public Command jiggleRollerCommand() {
     return new SequentialCommandGroup(
-        runOnce(() -> rollerMax.set(RollerConstants.ROLLER_SPEED)),
+        runOnce(() -> rollerMax.set(-RollerConstants.ROLLER_GIGGLE_SPEED)),
         new WaitCommand(0.5),
 
-        runOnce(() -> rollerMax.set(-RollerConstants.ROLLER_SPEED)),
+        runOnce(() -> rollerMax.set(RollerConstants.ROLLER_GIGGLE_SPEED)),
         new WaitCommand(0.5)
-      
     ).repeatedly();
   }
 
@@ -87,10 +86,6 @@ public class Roller extends SubsystemBase {
 
       if (driverController.rightBumper().getAsBoolean() || copilotController.rightBumper().getAsBoolean()) {
         rollerOn();
-      }
-
-      if (copilotController.povUp().getAsBoolean()) {
-        rollerReverse();
       }
 
     });

@@ -4,10 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.SwerveDrive.SwerveSubsystem;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -24,6 +28,8 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
+    DataLogManager.start();
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -50,7 +56,9 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    LimelightHelpers.SetThrottle(LimelightConstants.LIME_LIGHT_NAME, 150); // Skips "throttle" number of frames every cycle on Limelight to reduce heat
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -67,7 +75,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    LimelightHelpers.SetThrottle(LimelightConstants.LIME_LIGHT_NAME, 0); // Skips "throttle" number of frames every cycle on Limelight to reduce heat
+  }
 
   @Override
   public void teleopInit() {
@@ -79,24 +89,26 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.resetGyro();
+    m_robotContainer.resetGyro(); // Resets the gyroscope for teleop
+
+    // Adds 180 degrees to the gyro if we are on red alliance so the gyroscope and controls are correct
+    // and so the driver doesn't have to manually correct the robot
+    if (DriverStation.getAlliance().isPresent() && 
+        DriverStation.getAlliance().get() == OperatorConstants.RED_ALLIANCE) {
+      SwerveSubsystem.allianceRelativeGyroscopeControl();
+      System.out.println("Red Alliance detected: Gyro offset by 180 degrees");
+    }
+    else {
+      System.out.println("Blue Alliance or no alliance detected: No gyro offset applied");
+    }
   }
-
-
-  // This MUST match the name in your Limelight Web Dashboard exactly
-  private final String limelightName = "limelight-oasis";
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     //System.out.println("yello says the frog");
 
-    var table = NetworkTableInstance.getDefault().getTable(limelightName);
-
-        double tv = table.getEntry("tv").getDouble(0); // Is target visible?
-        double tx = table.getEntry("tx").getDouble(0); // Degrees off center
-
-    // System.out.println(tx);
+    LimelightHelpers.SetThrottle(LimelightConstants.LIME_LIGHT_NAME, 0); // Skips "throttle" number of frames every cycle on Limelight to reduce heat
   }
 
   @Override
