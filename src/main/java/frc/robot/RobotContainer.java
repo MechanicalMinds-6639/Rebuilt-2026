@@ -140,6 +140,7 @@ public class RobotContainer {
     
     //// Two Controller Set-Up
     driverController.a().whileTrue(driveFieldOrientedAutoAlign).whileFalse(driveFieldOrientedAngularVelocity);
+    driverController.b().whileTrue(driveBase.antiPushWheels()); // Puts the wheels in an X pattern and "locks" them
     driverController.x().whileTrue(driveBase.centerModulesCommand()); // Zeros the wheels
     // driverController.x().whileTrue(climber.ClimberUpCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber up when held
     // driverController.b().whileTrue(climber.ClimberDownCommand()).onFalse(climber.ClimberStopCommand()); // Runs the climber down when held
@@ -163,6 +164,7 @@ public class RobotContainer {
     //
     intake.setDefaultCommand(intake.intakeCommand(copilotController)); // Controls the intake lift motion and the intake spinny
     //
+    copilotController.povLeft().whileTrue(driveBase.antiPushWheels()); // Puts the wheels in an X pattern and "locks" them
     copilotController.povRight().whileTrue(roller.jiggleRollerCommand()).onFalse(roller.rollerOffCommand().andThen(roller.rollerCommand(driverController, copilotController))); // Jiggles the roller back and forth 
     ////
   }

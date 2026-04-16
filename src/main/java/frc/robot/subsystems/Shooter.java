@@ -11,6 +11,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SparkMaxIDs;
-import static edu.wpi.first.units.Units.Volts;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 public class Shooter extends SubsystemBase {
 
@@ -30,9 +30,8 @@ public class Shooter extends SubsystemBase {
   RelativeEncoder leftFlywheelEncoder = leftFlywheelMax.getEncoder();
   RelativeEncoder rightFlywheelEncoder = rightFlywheelMax.getEncoder();
 
-  double leftFlywheelRPM = leftFlywheelEncoder.getVelocity();
-  double rightFlywheelRPM = rightFlywheelEncoder.getVelocity();
-
+  double leftFlywheelRPM = 0;
+  double rightFlywheelRPM = 0;
   double leftFlywheelPosition = 0;
   double rightFlywheelPosition = 0;
   double avgFlywheelPosition = 0;
@@ -159,6 +158,9 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
+    double leftFlywheelRPM = leftFlywheelEncoder.getVelocity();
+    double rightFlywheelRPM = rightFlywheelEncoder.getVelocity();
     leftFlywheelPosition = leftFlywheelEncoder.getPosition();
     rightFlywheelPosition = rightFlywheelEncoder.getPosition();
     avgFlywheelPosition = (leftFlywheelPosition + rightFlywheelPosition) / 2;

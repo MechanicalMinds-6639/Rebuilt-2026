@@ -64,7 +64,6 @@ public final class Constants {
   }
 
   public static final class KickerConstants {
-    // Kicker Constants
     public static final double KICKER_SPEED = -1; // Negative to make the kicker go in the correct direction
   }
 
