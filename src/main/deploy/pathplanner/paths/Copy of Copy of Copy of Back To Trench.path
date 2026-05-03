@@ -32,11 +32,11 @@
     },
     {
       "anchor": {
-        "x": 2.874579172610556,
+        "x": 2.150014265335235,
         "y": 4.00265335235378
       },
       "prevControl": {
-        "x": 2.7496033909847486,
+        "x": 2.025038483709428,
         "y": 5.7080958588913875
       },
       "nextControl": null,
@@ -58,7 +58,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 179.61052106899064
   },
   "reversed": false,
   "folder": "Rookie Autos",

@@ -66,7 +66,7 @@ public class Roller extends SubsystemBase {
   }
 
   // This method stops the roller
-  public void rollersOff() {
+  public void rollerOff() {
     rollerMax.set(0);
   }
 
@@ -81,7 +81,7 @@ public class Roller extends SubsystemBase {
     return run(() -> {
 
       if (driverController.leftBumper().getAsBoolean() || copilotController.leftBumper().getAsBoolean()) {
-        rollersOff();
+        rollerOff();
       }
 
       if (driverController.rightBumper().getAsBoolean() || copilotController.rightBumper().getAsBoolean()) {

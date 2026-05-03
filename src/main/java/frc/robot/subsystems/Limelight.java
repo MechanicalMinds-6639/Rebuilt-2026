@@ -12,11 +12,12 @@ import frc.robot.Constants.LimelightConstants;
 public class Limelight extends SubsystemBase {
 
   // These are the class members
-  private int tv = 0;
-  private double tx = 0;
-  private double rotationRate = 0;
+  private int tv;
+  private double tx;
+  private double rotationRate;
   private boolean hubApriltagVisible;
-  private int tid = 0;
+  private int tid;
+  private double autonomousRotationRate;
 
   /** Creates a new Limelight. */
   public Limelight() {}
@@ -31,9 +32,14 @@ public class Limelight extends SubsystemBase {
     return tx;
   }
 
-  // This method returns "roationRate", or the degrees off center depending on if a target is visible or not
+  // This method returns "roationRate", or the degrees off center depending on if the center apriltag is visible or not
   public double getRotationRate() {
     return rotationRate;
+  }
+
+  // This method returns "autonomousRotationRate", or the degrees off center depending on if corner apriltag is visible or not
+  public double getAutonomousRotationRate() {
+    return autonomousRotationRate;
   }
 
   @Override
@@ -57,6 +63,11 @@ public class Limelight extends SubsystemBase {
     else {
       rotationRate = 0;
       hubApriltagVisible = false;
+    }
+
+    // If corner hub apriltag visible, do the same thing as the first if statment. *For Autonomous*
+    if (tv == 1 && (tid == 10 || tid == 25)) {
+      autonomousRotationRate = tx * LimelightConstants.AIM_KP; // Calculation: Degrees off center * Smoothness
     }
 
     SmartDashboard.putNumber("tv", tv);

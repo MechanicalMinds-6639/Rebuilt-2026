@@ -11,12 +11,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Shoot First 8"
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [

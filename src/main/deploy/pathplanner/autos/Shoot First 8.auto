@@ -17,25 +17,31 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Reverse Kicker"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot First 8 For Longer"
+                  "name": "Shoot First 8 Forever"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Kicker"
+                  "name": "Kicker Forever"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Roller"
+                  "name": "Roller Forever"
                 }
               }
             ]

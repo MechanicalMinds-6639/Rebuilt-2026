@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5862054208273886,
-        "y": 4.00265335235378
+        "x": 2.15,
+        "y": 5.9643999999999995
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.3362054208273886,
-        "y": 4.00265335235378
+        "x": 1.845951742943504,
+        "y": 5.963823873424104
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Infront of Bump"
     },
     {
       "anchor": {
-        "x": 2.153,
-        "y": 4.00265335235378
+        "x": 0.8739666666666668,
+        "y": 5.974144444444444
       },
       "prevControl": {
-        "x": 2.403789239383521,
-        "y": 4.00265335235378
+        "x": 1.1939636117396328,
+        "y": 5.9755427090721485
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "First 8 Endpoint"
+      "linkedName": "Depot Endpoint"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 179.61052106899064
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Basic Autos",
+  "folder": "Worlds",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

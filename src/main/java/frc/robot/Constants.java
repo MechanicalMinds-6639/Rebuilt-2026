@@ -29,28 +29,15 @@ public final class Constants {
   }
   
   public static final class SparkMaxIDs {
-    public static final int LEFT_FLY_WHEEL = 9;
-    public static final int RIGHT_FLY_WHEEL = 10;
-    public static final int KICKER = 11;
-    public static final int ROLLERS = 12;
-    public static final int INTAKE_LIFT = 13;
-    public static final int INTAKE_SPINNY = 14;
-    // public static final int LEFT_CLIMBER = 16; // Currently not on the robot
-    // public static final int RIGHT_CLIMBER = 17; // Currently not on the robot
+    public static final int SHOOTER = 9;
+    public static final int KICKER = 10;
+    public static final int ROLLERS = 11;
+    public static final int INTAKE_LIFT = 12;
+    public static final int INTAKE_SPINNY = 13;
   }
 
   public static final class ShooterConstants {
-    public static final double SHOOTER_ON_SPEED = -1; // Negative to make the shooter go in the correct direction
-    public static final double SHOOTER_REST_SPEED = -0.5; // Negative to make the shooter go in the correct direction
-
-    // Shooter PID
-    public static final double SHOOTER_KP = 0;
-    public static final double SHOOTER_KI = 0;
-    public static final double SHOOTER_KD = 0;
-    public static final double SHOOTER_KS = 0;
-    public static final double SHOOTER_KG = 0;
-    public static final double SHOOTER_KV = 0;
-    public static final double SHOOTER_KA = 0;
+    public static final double SHOOTER_SPEED = -1; // Negative to make the shooter go in the correct direction
     public static final double MAX_RPM = 5600; // Rounded down from max of 5676 RPM to be safe
   }
 
@@ -74,6 +61,6 @@ public final class Constants {
 
   public static final class LimelightConstants {
     public static final double AIM_KP = 0.04; // Aiming sensitivity: 0.04 is smooth and prevents battery brownouts
-    public static final String LIME_LIGHT_NAME = "limelight-butcher"; // This MUST match the name in your Limelight Web Dashboard exactly
+    public static final String LIME_LIGHT_NAME = "limelight-oasis"; // This MUST match the name in your Limelight Web Dashboard exactly
   }
 }
